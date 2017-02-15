@@ -74,7 +74,7 @@ class BbcSpider(scrapy.Spider):
                 UrlItem = BbccrawlURLItem()
                 UrlItem['URL'] = link.xpath('@href').extract()[0]
                 UrlItem['Title'] = link.xpath('span/text()').extract()[0]
-                if UrlItem['URL'][0:6] is not 'http://':
+                if UrlItem['URL'][0:6] != 'http://':
                     UrlItem['URL'] = 'http://www.bbc.com' + UrlItem['URL']
                 # print('抓取到【新闻首页】中的栏目链接：')
                 # print(UrlItem)
