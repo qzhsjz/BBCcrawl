@@ -5,6 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
+from scrapy.exceptions import DropItem
 import mysql.connector
 
 
@@ -28,8 +29,10 @@ class BbccrawlPipeline(object):
         cur = self.sqlconn.cursor()
         SQLinsert = 'INSERT IGNORE INTO `bbc`(title, newstype, pubtime, refer, summary, content) VALUES ("%(Title)s", "%(Type)s", "%(Pubtime)s", "%(Refer)s", "%(Summary)s", "%(Content)s")'
         cur.execute(SQLinsert, dict(item))
+        rows = cur.rowcount
         self.sqlconn.commit()
         cur.close()
+        if rows == 0: raise DropItem("Already in the database.")
         return item
 
     # 析构函数中断开连接
