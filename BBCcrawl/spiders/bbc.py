@@ -45,7 +45,7 @@ class BbcSpider(scrapy.Spider):
                     try:
                         UrlItem['URL'] = linkedstory.xpath('a/@href').extract()[0]
                         UrlItem['Title'] = linkedstory.xpath('a/div/div/div/span/text()').extract()[0]
-                        if UrlItem['URL'][0:6] is not 'http://':
+                        if UrlItem['URL'][0:6] != 'http://':
                             UrlItem['URL'] = 'http://www.bbc.com' + UrlItem['URL']
                         yield scrapy.Request(url=UrlItem['URL'])
                     except IndexError:
@@ -54,7 +54,7 @@ class BbcSpider(scrapy.Spider):
             for story in response.xpath('//a[contains(@class, "story-body__link")]'):
                 UrlItem['URL'] = story.xpath('@href').extract()[0]
                 # UrlItem['Title'] = story.xpath('text()').extract()[0]
-                if UrlItem['URL'][0:6] is not 'http://':
+                if UrlItem['URL'][0:6] != 'http://':
                     UrlItem['URL'] = 'http://www.bbc.com' + UrlItem['URL']
                 yield scrapy.Request(url=UrlItem['URL'])
         # 对栏目主页的处理
@@ -63,7 +63,7 @@ class BbcSpider(scrapy.Spider):
                 UrlItem = BbccrawlURLItem()
                 UrlItem['URL'] = link.xpath('@href').extract()[0]
                 UrlItem['Title'] = link.xpath('h3/span/text()').extract()[0]
-                if UrlItem['URL'][0:6] is not 'http://':
+                if UrlItem['URL'][0:6] != 'http://':
                     UrlItem['URL'] = 'http://www.bbc.com' + UrlItem['URL']
                 # print('抓取到【栏目主页】中的新闻稿链接：')
                 # print(UrlItem)
@@ -85,7 +85,7 @@ class BbcSpider(scrapy.Spider):
                 UrlItem = BbccrawlURLItem()
                 UrlItem['URL'] = link.xpath('@href').extract()[0]
                 UrlItem['Title'] = link.xpath('text()').extract()[0].lstrip().rstrip()
-                if UrlItem['URL'][0:6] is not 'http://':
+                if UrlItem['URL'][0:6] != 'http://':
                     UrlItem['URL'] = 'http://www.bbc.com' + UrlItem['URL']
                 # print('抓取到【首页】中的新闻链接：')
                 # print(UrlItem)
