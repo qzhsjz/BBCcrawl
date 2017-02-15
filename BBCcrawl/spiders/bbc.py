@@ -10,8 +10,6 @@ class BbcSpider(scrapy.Spider):
     articlecount = 0
 
     def parse(self, response):
-        NewsTypeList = ['world', 'uk', 'business', 'technology', 'science_and_environment', 'magazine',
-                        'entertainment_and_arts', 'health']
         # 新闻页面的处理
         if response.url[-1] in '1234567890':
             self.articlecount += 1
@@ -108,7 +106,7 @@ class BbcSpider(scrapy.Spider):
 
 
         # 对栏目主页的处理
-        elif response.url.lstrip('http://www.bbc.com/news/').split('/')[0] in NewsTypeList:
+        elif response.url.split('http://')[1].split('/')[-1][-1] not in '1234567890':
             for link in response.xpath('//a[contains(@class, "title-link")]'):
                 UrlItem = BbccrawlURLItem()
                 UrlItem['URL'] = link.xpath('@href').extract()[0]
